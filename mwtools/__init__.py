@@ -208,7 +208,7 @@ class MediawikiHandler(object):
 			return regex.sub('', d)
 
 		def strip_refs(d):
-			regex = re.compile(r"\<ref\>(.*?)\<\/ref\>", re.MULTILINE | re.DOTALL)
+			regex = re.compile(r"\<ref.*?\>(.*?)\<\/ref\>", re.MULTILINE | re.DOTALL)
 			return regex.sub('', d)
 		
 		def strip_tables(d):
@@ -216,11 +216,11 @@ class MediawikiHandler(object):
 			return regex.sub('', d)
 
 		def strip_font(d):
-			regex = re.compile(r"\'{3,5}")
+			regex = re.compile(r"\'{2,5}")
 			return regex.sub('', d)
 
 		def mask_titles(d):
-			regex = re.compile(r"(?<!=)(={1,6})([^=]+)\1(?!=)")
+			regex = re.compile(r"^(?<!=)(={1,6})([^=]+)\1(?!=)")
 			return regex.sub(lambda x: "[%s]" % x.group(0), d)
 
 		self.data = unescape(self.data)
@@ -333,14 +333,19 @@ class MediawikiHandler(object):
 
 		eh = ElementHandler(self.data, {"[[":"]]", "{{":"}}"})
 		self.data = eh.parse().getvalue()
-		# convert [ ] links
 
 	def _final_pass(self):
 		def strip_newlines(d):
 			regex = re.compile(r"\n\n+")
 			return regex.sub('\n\n', d)
 
+		def strip_brackets(d): 
+			# this is required because some people hurt the wiki
+			regex = re.compile(r"[\[\]\{\}]")
+			return regex.sub('', d)
+
 		self.data = strip_newlines(self.data)
+		self.data = strip_brackets(self.data)
 
 	def parse(self):
 		if not self.done:

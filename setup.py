@@ -7,18 +7,18 @@ from setuptools import setup, find_packages
 from os import listdir
 
 setup(
-	name = "mwparser",
+	name = "mwtools",
 	version = "0.7",
-	url = "https://github.com/bbqsrc/mwparser",
-	download_url='https://github.com/bbqsrc/mwparser/archives/master',
-	packages = ["mwparser"],
-	provides = ["mwparser"],
+	url = "https://github.com/bbqsrc/mwtools",
+	download_url='https://github.com/bbqsrc/mwtools/archives/master',
+	packages = ["mwtools"],
+	provides = ["mwtools"],
 	author = "Brendan Molloy",
 	author_email = "brendan@bbqsrc.net",
 	description = """Parses Mediawiki syntax into readable plain-text suitable
 	for linguistic purposes.""",
 	license = "CC0",
-	keywords = ["mediawiki", "wikipedia", "parser"],
+	keywords = ["mwtools", "mediawiki", "wikipedia", "parser"],
 	classifiers=[
     "Development Status :: 4 - Beta",
     "Operating System :: OS Independent",
