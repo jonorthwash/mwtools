@@ -261,23 +261,21 @@ class MediawikiHandler(object):
 						break
 					state.set(ch)
 					
-					#print(self.document.tell())
-
 					tag = state.get()
 					if tag in self.start_tags.keys():
 						begin = self.document.tell()
 						self.tags[tag].append(begin)
-						print("BEG(%s): %s %s" % (tag, begin, self.tags[tag]))
+						#print("BEG(%s): %s %s" % (tag, begin, self.tags[tag]))
 
 					elif tag in self.end_tags.keys():
 						tag = self.end_tags[tag]
 						depth = len(self.tags[tag])
 						end = self.document.tell()
-						print("END(%s): %s %s" % (self.start_tags[tag], end, self.tags[tag]))
+						#print("END(%s): %s %s" % (self.start_tags[tag], end, self.tags[tag]))
 						try:
 							begin = self.tags[tag].pop()
 						except:
-							print("ERR: no pop at %s" % end)
+							#print("ERR: no pop at %s" % end)
 							continue
 
 						p = -(state.maxlen)
@@ -300,7 +298,7 @@ class MediawikiHandler(object):
 
 						# end chunk
 						buf.append(self.document.read())
-						print(buf)
+						#print(buf)
 						out = self.parse_element(tag, buf[2])
 						
 						self.document = StringIO(buf[0] + out + buf[4])
@@ -335,9 +333,6 @@ class MediawikiHandler(object):
 
 		eh = ElementHandler(self.data, {"[[":"]]", "{{":"}}"})
 		self.data = eh.parse().getvalue()
-		# strip {{ }} blocks
-		# convert bold/italic/underlined shit
-		# convert [[ ]] links
 		# convert [ ] links
 
 	def _final_pass(self):
