@@ -203,23 +203,20 @@ class MediawikiHandler(object):
 				out = re.sub(m.group(0), symbols[m.group(0)], out)
 			return out
 
-		def strip_comments(d):
-			regex = re.compile(r"\<\!\-\-.*\-\-\>", re.MULTILINE | re.DOTALL)
-			return regex.sub('', d)
-
-		def strip_refs(d):
-			regex = re.compile(r"\<ref.*?\>(.*?)\<\/ref\>", re.MULTILINE | re.DOTALL)
-			return regex.sub('', d)
-		
-		def strip_tables(d):
-			regex = re.compile("\{\|.*\|\}", re.MULTILINE | re.DOTALL)
-			return regex.sub('', d)
-
-		def strip_font(d):
+		def strip(d):
+			regex = []
+			# strip comments
+			regex.append(r"\<\!\-\-.*\-\-\>")
+			# strip refs
+			regex.append(r"\<ref.*?\>(.*?)\<\/ref\>")
+			# strip tables
+			regex.append("\{\|.*\|\}")
+			# strip font
 			regex = re.compile(r"\'{2,5}")
 			return regex.sub('', d)
 
 		def mask_titles(d):
+			# mark titles
 			regex = re.compile(r"^(?<!=)(={1,6})([^=]+)\1(?!=)")
 			return regex.sub(lambda x: "[%s]" % x.group(0), d)
 
